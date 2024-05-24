@@ -1,0 +1,84 @@
+﻿
+@{
+    ViewData["Title"] = "Homework1";
+}
+
+<h1>Homework1</h1>
+
+<div id="card" class="row row-cols-1 row-cols-md-3 g-3"></div>
+   
+
+@section Styles
+{
+    <style>
+        
+
+    </style>
+}
+
+
+@section Scripts
+{
+
+    <script src="~/js/travel.js"></script>
+
+    <script>
+      
+        const card = document.querySelector('#card');
+        let string = "";
+
+        spots.CommonFormat.Section.forEach((item) => {
+
+            const imgsrc = (item.file && item.file.img && item.file.img[0] && item.file.img[0].text) ? item.file.img[0].text : '沒有照片顯示';
+            
+            //為什麼分開寫就不行???
+            //let = imgsrc;
+
+            //if(item.file && item.file.img && item.file.img[0] && item.file.img[0].text)
+            //{imgsrc = item.file.img[0].text;}
+            //else 
+            //{imgsrc='沒有照片顯示';}
+
+            string +=
+                `
+                <div class="col ">
+                              <div class="card h-120" >
+                                    <img src="${imgsrc}"  class="card-img-top" alt="${spots.stitle}">
+                                    <div class="card-body">
+                                      <h5 class="card-title">${item.stitle}</h5>
+                                     <p class="card-text ">${item.xbody.substring(0, 100)}...</p>
+                                    </div>
+                                </div>
+                            </div>
+                `;
+                });
+
+                card.innerHTML=string;
+
+        //為什麼用map的方式就不行???
+        //  imgsrc= spots.CommonFormat.Section[i].file.img[0].text;   
+        
+        //  const travel = aa.map(spots => {
+        //            return (
+        //                `<div class="col ">
+        //              <div class="card h-120 cw" >
+
+        //                    <img src="${imgsrc}"  class="card-img-top">
+        //                    <div class="card-body">
+        //                      <h5 class="card-title">${spots.stitle}</h5>
+        //                     <p class="card-text ">${spots.xbody.substring(0, 100)}...</p>
+
+        //                    </div>
+        //                </div>
+        //            </div>
+
+        //            `
+        //            )
+        //        })
+             
+
+        //card.innerHTML = travel.join("");
+      
+
+     </script>
+}

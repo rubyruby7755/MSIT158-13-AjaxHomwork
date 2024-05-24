@@ -1,0 +1,32 @@
+﻿
+@{
+    ViewData["Title"] = "callApi";
+}
+
+<h1>callApi</h1>
+
+@section Styles
+{
+    <style>
+
+
+    </style>
+}
+
+
+@section Scripts
+{
+
+
+    <script>
+        //呼叫其他人的API
+        (async () => {
+            const response = await fetch('https://localhost:7144/api/Categories');
+            const data = await response.json();
+            console.log(data);
+
+       })();
+
+
+    </script>
+}

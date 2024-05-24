@@ -1,0 +1,89 @@
+﻿@model IEnumerable<website.Models.Category>
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+
+<ul>
+    @foreach (var category in Model)
+    {
+        <li>@category.CategoryName</li>
+    }
+</ul>
+
+
+@section Styles
+{
+    <style>
+        h1
+        {
+            background-color:aquamarine;
+        }
+    </style>
+}
+
+@section Scripts
+{
+    <script>
+        //step1
+        const myH = document.querySelector('h1.display-4'); //css selector
+
+        //step2滑鼠移上去>事件>moseover
+        myH.addEventListener('mouseover',(evt)=>{
+            evt.target.style.backgroundColor='cyan';})
+
+            //等一秒印出A，等一秒印出B，等一秒印出C
+            //promise 跟then的寫法，回傳promise物件
+        function printSimething(data)
+        {
+            const promise = new Promise((resolve,reject)=>{
+                setTimeout(()=>{
+                    resolve(data)
+                },1000)
+            })
+            return promise
+        }
+        
+       
+        //    printSomething("A").then(data => {
+        //    console.log(data)
+        //    return printSomething("B")
+        //}).then(data)=>{
+        //    console.log(data)
+        //    return printSomething("C")
+        //}).then(data)=> {
+        //    console.log(data)
+        //}).finally(()=>{
+        //    console.log("END")
+        //})
+
+        //改成用async、await語法糖
+        //async function show(){
+        //    let data = await printSimething("A")
+        //    console.log(data)
+        //    data = await printSimething("B")
+        //    console.log(data)
+        //    data = await printSimething("C")
+        //    console.log(data)
+        //}
+        //show()
+
+        //結合立即執行函式，去掉function，去掉show，讓網頁一載入就執行
+        (async ()=> {
+            let data = await printSimething("A");
+            console.log(data);
+            data = await printSimething("B");
+            console.log(data);
+            data = await printSimething("C");
+            console.log(data);
+        })();
+      
+
+
+    </script>
+}
+

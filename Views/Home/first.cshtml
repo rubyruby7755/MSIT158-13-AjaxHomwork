@@ -1,0 +1,98 @@
+﻿
+@{
+    ViewData["Title"] = "first";
+}
+
+<h1>first</h1>
+<button id="buttonStart" class="btn btn-primary">Ajax開始</button>
+<button id="buttonStop" class="btn btn-danger">Ajax停止</button>
+<img src="~/images/spinner-5.gif"  id="img1" style="display:none"/>
+<div id="div1"></div>
+
+
+@section Styles
+{
+    <style>
+
+
+    </style>
+}
+
+
+@section Scripts{
+
+
+    <script>
+        const btn =document.querySelector('#buttonStart');
+        const btnStop = document.querySelector('#buttonStop');
+        const myDiv=document.querySelector('#div1');
+        const imgLoading = document.querySelector('#img1');
+
+
+        let abortController; 
+       
+
+        btnStop.addEventListener('click', () => {
+            if (abortController) 
+            {
+                abortController.abort();
+            }
+        })
+        
+        btn.addEventListener('click',async()=>{
+            
+            //myDiv.textContent='btn click';
+            ////ajax程式寫在這裡
+            //console.log(fetch(`@Url.Content("~/api/index")`)); //用fetch這個方法本身會得到一個promise物件 
+            ////用飄符號才能找得到專案資料夾，不會因為你的IIS換了，而無法連
+
+            //fetch(`@Url.Content("~/api/index")`)
+            //.then(response =>{ //要取得promise物件用.then
+            //    console.log(response); //我們的資料在reponse的body裡面
+            //    console.log(response.text);
+            //    return response.text(); //.text方法會從body區塊取出文字資料，但也是一個promise物件
+            //})
+            //.then(data=>{ //因為又是一層pormise物件，所以要再一次then
+            //    myDiv.innerHTML=`<h2>${data}</h2>`; //放到標籤裡面
+            //})
+
+            //改成用async、await寫法，比較簡潔
+            // 要在addEventListener('click',這裡加上async，括號是原本就有的
+            
+            
+            try{
+                imgLoading.style.display = "inline"; //顯示執行的圖片
+                btn.setAttribute("disabled", "disabled"); //讓按鈕不能使用
+                
+                //取消ajax的執行
+                abortController= new AbortController();
+                const signal = abortController.signal;
+
+                setTimeout(()=>{
+                    abortController.abort();
+                },5000); //設定五秒沒反應，就停止ajax的連接
+
+                //ajax程式
+                const response = await fetch(`@Url.Content("~/api/index")`,{signal});
+            
+            if(!response.ok)
+              {
+                throw new Error(`${response.status}`);
+              }
+            
+            const data = await response.text();
+            myDiv.innerHTML = `<h2>${data}</h2>`;
+            }
+            catch(error)
+            {
+                myDiv.innerHTML = `<h2>${error.message}</h2>`; //顯示錯誤訊息
+            }
+            finally
+            {
+                imgLoading.style.display = "none";//隱藏執行的圖片
+                btn.removeAttribute("disabled");//讓按鈕可以按
+            }
+        })
+
+        </script>
+}
