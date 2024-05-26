@@ -85,12 +85,14 @@
         const inpPwd = document.querySelector('#InputPwd').value;
         const inpCheckPwd = document.querySelector('#InputCheckPwd').value;
 
-
+    
         inpCheckPwd.addEventListener('blur', function() {
-           
+            console.log(inpPwd);
+
             if (!inpPwd === inpCheckPwd)
             divResult.textContent= "兩次密碼輸入不同，請再確認";
             divResult.style.color = 'red';
+
         });
 
 

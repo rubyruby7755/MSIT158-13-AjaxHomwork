@@ -20,5 +20,12 @@ namespace website.Controllers
 
             return View();
         }
+
+        public IActionResult Homework4()
+        {
+
+            return View();
+        }
     }
 }
+
