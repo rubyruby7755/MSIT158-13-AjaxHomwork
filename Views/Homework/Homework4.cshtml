@@ -12,7 +12,7 @@
     <div class="col-6">
         <nav>
             <ul class="pagination" id="ulPaging">
-            @* 放分頁紐 *@
+            
             </ul>
         </nav>
     </div>
@@ -22,11 +22,11 @@
 </div>
 <nav>
     <ul class="pagination pagination-lg" id="ulCategories">
-       @* 放類別紐 *@
+       
     </ul>
 </nav>
 <div class="row row-cols-1 row-cols-md-3 g-4" id="divSpots">
-    @* 放景點卡片 *@
+  
 </div>
 
 
@@ -43,106 +43,9 @@
 
 @section Scripts {
     <script>
-        const divSpots = document.querySelector('#divSpots');
-        const ulPaging = document.querySelector('#ulPaging');
-        const inputSearch = document.querySelector('#inputSearch');
-        const ulCategories = document.querySelector('#ulCategories');
+        
 
-        //前端的需求(json檔)
-        const searchData = {
-            "categoryId": 0,
-            "keyword": "公園",
-            "page": 1,//第1頁
-            "pageSize": 9,//9筆資料為一頁
-            "sortBy": "SpotId",//依...排序
-            "sortType": "asc"//升冪
-        };
-
-        //---------------------------------------
-
-        //事件: 按下分頁紐
-        const pagingHandler = page => {
-            searchData.page = page;//重新給值page
-            loadSpots();//再呼叫一次API+呈現結果
-        }
-
-        //事件: 按下類別紐
-        const categoryHandler = categoryId => {
-            searchData.categoryId = categoryId;//重新給值categoryId
-            loadSpots();//再呼叫一次API+呈現結果
-        }
-
-        //事件: 關鍵字搜尋, 按下ENTER
-        inputSearch.addEventListener('keydown', event => {
-            if (event.keyCode === 13) {
-                searchData.keyword = event.target.value;//重新給值keyword
-                loadSpots();//再呼叫一次API+呈現結果
-            }
-        })
-
-        //---------------------------------------------
-
-        //加載類別紐
-        const loadCategories = async () => {
-            const url = "@Url.Content("~/API/returnCategories")";
-            const response = await fetch(url);
-            const data = await response.json();
-            console.log(data);
-            const categories = data.map(category => `<li class="page-item" onclick="categoryHandler(${category.categoryId})"><a class="page-link">${category.categoryName}</a></li>`)
-            ulCategories.innerHTML = categories.join("");
-        }
-
-        //加載景點卡片
-        const loadSpots = async () => {
-            //1.呼叫API: 前端把需求(searchData)丟給後端, 再接後端處理好的結果(data)
-            const url = "@Url.Content("~/API/searchSpots")";
-            const response = await fetch(url, {
-                method: 'POST',
-                body: JSON.stringify(searchData),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
-            const data = await response.json();
-            console.log(data);//data = SpotsPagingDTO物件
-
-            //2.把結果顯示在畫面上
-            //2-1.顯示景點資料
-            const spots = data.spotsResult.map(spot => {
-                const { spotId, spotTitle, spotDescription, address, spotImage } = spot;//解構賦值: 只挑出需要呈現在畫面上的欄位
-                return (`
-                         <div class="col">
-                            <div class="card h-100">
-                                <img src="${spotImage}" class="card-img-top" alt="${spotTitle}">
-                                <div class="card-body">
-                                    <h5 class="card-title">${spotId} ${spotTitle}</h5>
-                                    <p class="card-text">${spotDescription.length <= 100 ? spotDescription : spotDescription.substring(0, 100)}</p>
-                                    <div class="card-footer">
-                                        <small class="text-body-secondary">${address}</small>
-                                    </div>
-                                </div>
-                            </div>
-                         </div>
-                `)
-            })
-            divSpots.innerHTML = spots.join("");
-
-            //2-2.顯示分頁按鈕
-            let liPages = "";
-            for (let i = 1, max = data.totalPages; i <= max; i++) {
-                liPages += `<li class="page-item" onclick="pagingHandler(${i})"><a class="page-link">${i}</a></li>`
-            }
-            ulPaging.innerHTML = liPages;
-
-        }
-
-        //-----------------------------------------
-
-        //初始化函數
-        (async () => {
-            await loadCategories();
-            await loadSpots();
-        })();
+      
 
     </script>
   }
