@@ -1,0 +1,76 @@
+﻿
+@{
+    ViewData["Title"] = "Homework2";
+}
+
+<h1>Homework2</h1>
+<h3>檢查帳號</h3>
+
+
+<div class="row">
+    <div class="col-3"></div>
+    <div class="col-6">
+        
+        <form method="post" action="~/api/register" id="userForm">
+            <div class="mb-3">
+                <label for="InputName" class="form-label">姓名</label>
+                <input type="text" class="form-control" id="InputName" name="Name">
+                <div id="div1" class="alert alert-info mt-3"></div>
+            </div>
+            <div class="mb-3">
+                <label for="InputEmail" class="form-label">電子郵件</label>
+                <input type="email" class="form-control" id="InputEmail" name="email">
+            </div>
+            <div class="mb-3">
+                <label for="InputAge" class="form-label">年紀</label>
+                <input type="number" class="form-control" id="InputAge" name="age">
+            </div>
+
+            <button type="submit" class="btn btn-primary" id="buttonSubmit">送出</button>
+        </form>
+        <div id="div2" class="alert alert-info mt-3"></div>
+
+    </div>
+    <div class="col-3"></div>
+</div>
+
+
+@section Styles
+    {
+    <style>
+
+
+    </style>
+}
+
+
+@section Scripts
+    {
+
+
+    <script>
+      
+        const divResult = document.querySelector('#div1');
+        const btnSubmit = document.querySelector('#buttonSubmit');
+
+
+        btnSubmit.addEventListener('click', async (evt) => {
+            evt.preventDefault(); //防止預設行為的發生
+
+            //將資料放進FormData
+            const myForm = document.querySelector('#userForm');
+            const formData = new FormData(myForm);
+
+            const url = '@Url.Content("~/api/CheckAccount/")';
+            const response = await fetch(url, {
+                method: 'POST',
+                body: formData 
+            });
+
+            const data = await response.text();
+            divResult.textContent = data;
+
+        })
+
+    </script>
+}

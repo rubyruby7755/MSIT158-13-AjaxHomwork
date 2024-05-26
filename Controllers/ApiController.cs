@@ -63,6 +63,20 @@ namespace website.Controllers
             return NotFound(); //找不到
         }
 
+
+        //檢查帳號是否存在
+        public IActionResult CheckAccount(string name)
+        {
+            string answer = "";
+
+            if (_context.Members.Any(m => m.Name == name))
+                answer += "帳號已存在";
+            else
+                answer += "此帳號可使用";
+
+            return Content(answer);
+        }
+
         //public IActionResult Register(int id,string name, int age = 20) //如果沒傳值進來就是預設20
         public IActionResult Register(Member member, IFormFile avatar)
         {
@@ -73,7 +87,10 @@ namespace website.Controllers
             //取得上傳檔案的資訊
             //string info = $"{avatar.FileName} - {avatar.Length} - {avatar.ContentType}";
 
-
+            if(string.IsNullOrEmpty(member.Password))
+            {
+                return Content("密碼欄不得為空"); 
+            }
 
             //string info = _hostEnvironment.ContentRootPath;
 
@@ -112,9 +129,12 @@ namespace website.Controllers
 
 
             //return Content($"Hello {member.Name}，{member.Age} 歲了，電子郵件是 {member.Email}", "text/html", System.Text.Encoding.UTF8);
-            return Content(info, "text/plain", System.Text.Encoding.UTF8);
+            //return Content(info, "text/plain", System.Text.Encoding.UTF8); //只有顯示上傳檔名而已
+            return Content("恭喜 ${member.Name}，你今年{member.Age} 歲，電子郵件是 {member.Email}，密碼為${member.password}，上傳頭像檔名為${info}", "text/plain", System.Text.Encoding.UTF8);
 
         }
+
+
 
         [HttpPost]
         public IActionResult Spots([FromBody] SearchDTO searchDTO)
